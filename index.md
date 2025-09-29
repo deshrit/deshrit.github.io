@@ -23,9 +23,11 @@ Apart from work, I like to travel, trek and just live peaceful life.
 
 ## Interest:
 
-- **Robotics & Research**: From the very young age, I was passionate about how things
-worked and specially how can I make my own. I like to keep up with lastest advancements 
-and findings.
+- **Robotics & Research**: From a very young age, I was passionate about understanding 
+how systems work and, especially, how can I build my own versions of it, which naturally 
+led me toward engineering, robotics and AI. I like to stay updated on latest 
+advancements and findings. 
+
 
 - **Movies**: I like watching all genres of movies. My only ask - I should be never 
 able to guess the ending until the very end. I aspire to  become a movie/drama director 

@@ -12,7 +12,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v5
       
-      - name: Confugure ruby
+      - name: Configure ruby
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: 3.2
@@ -25,7 +25,7 @@ jobs:
         run: bundler install
 
       - name: Build site
-        run: bundler exec jekyll b
+        run: JEKYLL_ENV=production bundler exec jekyll b
       
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4
