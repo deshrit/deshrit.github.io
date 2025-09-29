@@ -9,38 +9,37 @@ layout: home
 
 Hi, I am Deshrit *(day-shree-th)* !
 
-I am a software engineer based in Nepal 🇳🇵. I like to work in the backend and 
-AI/ML  side  of the things. I like building  robust and scaleable applications.
+I am a software engineer based in Nepal 🇳🇵. 
 
 Currently, I am working at [smart-contents](https://smartcontents.co.jp/){:target="_blank"}, 
-leading two projects - a chatbot as a service and a AI based financial documents 
-generation workflow. I am extensively using langgraph and postgreSQL for writing 
-persistence and fault tolorant applications.
+leading two projects—a chatbot as a service and an AI assisted financial document 
+generation workflow. I am extensively using langgraph 
+and postgreSQL for writing persistence and fault tolerant applications.
 
 Previously I worked at [SecurityPal](https://www.securitypalhq.com/){:target="_blank"}.
 
-Apart from work, I like to travel, trek and just live peaceful life.
+Apart from work, I like to travel and trek.
 
 ## Interest:
 
-- **Robotics & Research**: From the very young age, I was passionate about how things
-worked and specially how can I make my own. I like to keep up with lastest advancements 
-and findings.
+- **Robotics & Research**: From a young age, I was passionate about building things 
+of my own and it naturally led me toward engineering, robotics and AI. I like to stay 
+updated on latest advancements, trends and findings. 
 
-- **Movies**: I like watching all genres of movies. My only ask - I should be never 
-able to guess the ending until the very end. I aspire to  become a movie/drama director 
-one day, not fulltime but just for a side quest - probably - maybe - or I will just 
-change my mind 🤦
 
-- **Walking**: In the evening, I walk for at least half an hour a day along 
-the bank of Manohara river. This has been one of my favourite things do since
-the pandemic. 
+- **Movies**: I like to watch all genres of movies and shows - animations, novels, 
+history, thriller, crime, and many others. I want to direct a drama/movie of my own
+if I could one day.
+
+- **Walking**: Everyday, in the evening, I walk for at least half an hour along the 
+bank of the Manohara river. I never 
+want to skip this but sometimes the schedule does not cooperate!
 
 ## Principle:
 
-- **Result Oriented**: I always like to evaluate myself based upon the outcomes.
-I believe this way of observing helps ourselves to never divert 
-from what we want to acheive and exactly shows where we are in that path.
+- **Result Oriented**: I always like to evaluate myself based upon the outcomes. I 
+believe this way of observing ourselves help us to never divert from what we want to 
+acheive and exactly show where we are in that path.
 
 - **Empathetic**: Being empathic makes us more human and brings people closer to one 
 another.
