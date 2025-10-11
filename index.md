@@ -9,30 +9,27 @@ layout: home
 
 Hi, I am Deshrit *(day-shree-th)* !
 
-I am a software engineer based in Nepal 🇳🇵. I like to work in the backend and 
-AI/ML  side  of the things. I like building  robust and scaleable applications.
+I am a software engineer based in Nepal 🇳🇵. 
 
-Currently, I am working at [smart-contents](https://smartcontents.co.jp/){:target="_blank"}, 
-leading two projects - a chatbot as a service and a AI based financial documents 
-generation workflow. I am extensively using langgraph and postgreSQL for writing 
-persistence and fault tolorant applications.
+Currently, I am working at [smart-contents](https://smartcontents.co.jp/){:target="_blank"}, leading two projects—a chatbot as a service and an AI assisted financial document 
+generation workflow. I am extensively using langgraph 
+and postgreSQL for writing persistence and fault tolerant applications.
 
 Previously I worked at [SecurityPal](https://www.securitypalhq.com/){:target="_blank"}.
 
-Apart from work, I like to travel, trek and just live peaceful life.
+Apart from work, I like to travel and trek.
 
 ## Interest:
 
-- **Robotics & Research**: From a very young age, I was passionate about understanding 
-how systems work and, especially, how can I build my own versions of it, which naturally 
-led me toward engineering, robotics and AI. I like to stay updated on latest 
-advancements and findings. 
+- **Robotics & Research**: From a young age, I was passionate about building things 
+of my own and it naturally led me toward engineering, robotics and AI. I like to stay 
+updated on latest advancements, trends and findings in order to widen my knowledge  and
+ability to solve problems more efficiently. 
 
 
-- **Movies**: I like watching all genres of movies. My only ask - I should be never 
-able to guess the ending until the very end. I aspire to  become a movie/drama director 
-one day, not fulltime but just for a side quest - probably - maybe - or I will just 
-change my mind 🤦
+- **Movies**: I like watching all genres of movies. I even aspire to become a 
+movie/drama director one day, not a fulltime career but a side quest or maybe I will 
+just change my mind, not so sure on this.
 
 - **Walking**: In the evening, I walk for at least half an hour a day along 
 the bank of Manohara river. This has been one of my favourite things do since

@@ -5,6 +5,7 @@ url: "https://deshritbaral.com.np"
 linkedin_username: deshrit
 github_username:  deshrit
 youtube_username: "@deshrit"
+permalink: /blog/:year/:month/:day/:title
 
 # Build settings
 theme: minima
