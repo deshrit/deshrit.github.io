@@ -9,7 +9,7 @@ If you’ve ever tried to control the speed of a motor, balance a robot, or main
 stable temperature with an Arduino or any other micro-controller, chances are you’ve 
 come across something called a **PID controller**. At first, PID might look complicated 
 with all its math and jargon—but its actually a simple concept! Today, I will 
-break it down for your in simple terms so that you can quickly learn how to implement 
+break it down for you in simple terms so that you can quickly learn how to implement 
 it in your own projects.  
 
 
@@ -62,25 +62,25 @@ void loop() {
 - Calculate error
 
 ```c
-float error;
+float error, prev_error;
 error = set_point - sensor_value;
 ```
 
-- Calulate **p** value
+- Calculate **p** value
 
 ```c
 float p;
 p = kp * error;
 ```
 
-- Calulate **d** value
+- Calculate **d** value
 
 ```c
 float d;
 d = kd * (prev_error - error);
 ```
 
-- Calulate **i** value
+- Calculate **i** value
 
 ```c
 float i;
@@ -126,15 +126,15 @@ current `error`.
 and quality of sensor used in the project.
 
 2. Skip the processing in deadzone—As we know the total PID value is the direct output 
-to the actuator, suppose, for a balacing robot in a *single axis*, if the sensor ouput 
-value in degree is $$ 0^\circ $$ when perfectly vertical, then possible deadzone range 
-(depending upon the type of sensors, motors etc.) can be $$ \pm2^\circ $$, where 
+to the actuator, suppose, for a balancing robot in a *single axis*, if the sensor 
+output value in degree is $$ 0^\circ $$ when perfectly vertical, then possible deadzone 
+range (depending upon the type of sensors, motors etc.) can be $$ \pm2^\circ $$, where 
 processing the PID value can be completely skipped and simply set to 0.
 
 3. Also Keep in account for the actuator deadzone—If you are using an arduino to drive 
 a motor with a motor driver, you have to give out PWM value from any analog pin to the 
 driver, which generally in code value from 0 to 255 and you might have noticed the 
-motor does not immediately start moving in intial values maybe even for upto 10 or 20, 
+motor does not immediately start moving in initial values maybe even for upto 10 or 20, 
 this maximum value until when the motor does not start moving is the actuator deadzone. 
 And to fix this problem simply add this value 20 to PID output or you can also map your 
 PID value to range 20 to 255 of motor driver output.
@@ -156,7 +156,7 @@ A typical setup looks like this:
 #include <Arduino.h>
 
 /* Required variables */
-float sensor_value, output, set_point, error, p, i, d;
+float sensor_value, output, set_point, error, prev_error, p, i, d;
 unsigned long loop_timer;
 
 /* PID parameters */
