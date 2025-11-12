@@ -1,4 +1,79 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.4.1">Jekyll</generator><link href="https://deshritbaral.com.np/feed.xml" rel="self" type="application/atom+xml" /><link href="https://deshritbaral.com.np/" rel="alternate" type="text/html" /><updated>2025-11-12T17:26:52+00:00</updated><id>https://deshritbaral.com.np/feed.xml</id><title type="html">Deshrit Baral</title><entry><title type="html">Minimax Algorithm: Understanding with Tic-Tac-Toe</title><link href="https://deshritbaral.com.np/blog/2024/11/11/minimax" rel="alternate" type="text/html" title="Minimax Algorithm: Understanding with Tic-Tac-Toe" /><published>2024-11-11T00:00:00+00:00</published><updated>2024-11-11T00:00:00+00:00</updated><id>https://deshritbaral.com.np/blog/2024/11/11/minimax</id><content type="html" xml:base="https://deshritbaral.com.np/blog/2024/11/11/minimax"><![CDATA[<p>Have you ever wondered how computers play games? And, surprising thing is they do win
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Minimax Algorithm: Understanding with Tic-Tac-Toe | Deshrit Baral</title>
+<meta name="generator" content="Jekyll v4.4.1" />
+<meta property="og:title" content="Minimax Algorithm: Understanding with Tic-Tac-Toe" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Have you ever wondered how computers play games? And, surprising thing is they do win with best possible results? You may say yeah that is whole points of computer - to solve problems and do math, but shouldn’t there be some techniques because just having an oven and flour does not bake the bun itself." />
+<meta property="og:description" content="Have you ever wondered how computers play games? And, surprising thing is they do win with best possible results? You may say yeah that is whole points of computer - to solve problems and do math, but shouldn’t there be some techniques because just having an oven and flour does not bake the bun itself." />
+<link rel="canonical" href="https://deshritbaral.com.np/blog/2024/11/11/minimax" />
+<meta property="og:url" content="https://deshritbaral.com.np/blog/2024/11/11/minimax" />
+<meta property="og:site_name" content="Deshrit Baral" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2024-11-11T00:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Minimax Algorithm: Understanding with Tic-Tac-Toe" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2024-11-11T00:00:00+00:00","datePublished":"2024-11-11T00:00:00+00:00","description":"Have you ever wondered how computers play games? And, surprising thing is they do win with best possible results? You may say yeah that is whole points of computer - to solve problems and do math, but shouldn’t there be some techniques because just having an oven and flour does not bake the bun itself.","headline":"Minimax Algorithm: Understanding with Tic-Tac-Toe","mainEntityOfPage":{"@type":"WebPage","@id":"https://deshritbaral.com.np/blog/2024/11/11/minimax"},"url":"https://deshritbaral.com.np/blog/2024/11/11/minimax"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="https://deshritbaral.com.np/feed.xml" title="Deshrit Baral" /><script>
+if(!(window.doNotTrack === "1" || navigator.doNotTrack === "1" || navigator.doNotTrack === "yes" || navigator.msDoNotTrack === "1")) {
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', '{"id"=>"G-CMDTH72TR2"}', 'auto');
+  ga('send', 'pageview');
+}
+</script>
+  
+<link rel="icon" href="/favicon.png" type="image/x-icon">
+
+  <!-- Google Analytics -->
+  
+    <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-CMDTH72TR2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag("js", new Date());
+  gtag("config", "G-CMDTH72TR2");
+</script>
+
+  
+</head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">Deshrit Baral</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/">Home</a><a class="page-link" href="/blog">Blog</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <p class="post-title p-name" itemprop="name headline">Minimax Algorithm: Understanding with Tic-Tac-Toe</p>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2024-11-11T00:00:00+00:00" itemprop="datePublished">Nov 11, 2024
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>Have you ever wondered how computers play games? And, surprising thing is they do win
 with best possible results? You may say yeah that is whole points of computer - to solve
 problems and do math, but shouldn’t there be some techniques because just 
 having an oven and flour does not bake the bun itself.</p>
@@ -347,206 +422,38 @@ Enter 'q' to quit."""</span><span class="p">)</span>
 
 <p>To run the game:</p>
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python3 tic-tac-toe.py
-</code></pre></div></div>]]></content><author><name></name></author><category term="jekyll" /><category term="update" /><summary type="html"><![CDATA[Have you ever wondered how computers play games? And, surprising thing is they do win with best possible results? You may say yeah that is whole points of computer - to solve problems and do math, but shouldn’t there be some techniques because just having an oven and flour does not bake the bun itself.]]></summary></entry><entry><title type="html">Tuning a PID Controller</title><link href="https://deshritbaral.com.np/blog/2024/09/25/tuning-PID-controller" rel="alternate" type="text/html" title="Tuning a PID Controller" /><published>2024-09-25T00:00:00+00:00</published><updated>2024-09-25T00:00:00+00:00</updated><id>https://deshritbaral.com.np/blog/2024/09/25/tuning-PID-controller</id><content type="html" xml:base="https://deshritbaral.com.np/blog/2024/09/25/tuning-PID-controller"><![CDATA[<p>If you’ve ever tried to control the speed of a motor, balance a robot, or maintain a 
-stable temperature with an Arduino or any other micro-controller, chances are you’ve 
-come across something called a <strong>PID controller</strong>. At first, PID might look complicated 
-with all its math and jargon—but its actually a simple concept! Today, I will 
-break it down for you in simple terms so that you can quickly learn how to implement 
-it in your own projects.</p>
-
-<hr />
-
-<h2 id="what-is-a-pid-controller">What is a PID Controller?</h2>
-
-<p>PID stands for:</p>
-<ul>
-  <li><strong>P</strong>: Proportional</li>
-  <li><strong>I</strong>: Integral</li>
-  <li><strong>D</strong>: Derivative</li>
-</ul>
-
-<p>Think of it like this:</p>
-
-<ul>
-  <li><strong>P</strong> is how hard you push toward your goal.</li>
-  <li><strong>I</strong> keeps track of how far you’ve been off the goal over time and nudges you to 
-fix it.</li>
-  <li><strong>D</strong> watches how fast you’re approaching the goal and prevents you from overshooting.</li>
-</ul>
-
-<p>All three work together to reach your target smoothly and accurately.</p>
-
-<hr />
-
-<h2 id="implementing-pid-controller-in-code">Implementing PID Controller in Code</h2>
-
-<p>Writing the PID logic in code has to be the easiest part of all. There are only few 
-thing to keep in mind.</p>
-
-<ul>
-  <li>Constant main loop</li>
-</ul>
-
-<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">loop_timer</span><span class="p">;</span>
-
-<span class="n">loop_timer</span> <span class="o">=</span> <span class="n">micros</span><span class="p">();</span>
-
-<span class="kt">void</span> <span class="nf">loop</span><span class="p">()</span> <span class="p">{</span>
-
-  <span class="cm">/* Read sensor value */</span>
-
-  <span class="cm">/* PID code */</span>
-
-  <span class="k">while</span> <span class="p">(</span><span class="n">micros</span><span class="p">()</span> <span class="o">-</span> <span class="n">loop_timer</span> <span class="o">&lt;</span> <span class="mi">4000</span><span class="p">);</span>
-  <span class="n">loop_timer</span> <span class="o">=</span> <span class="n">micros</span><span class="p">();</span>
-<span class="p">}</span>
 </code></pre></div></div>
 
-<ul>
-  <li>Calculate error</li>
-</ul>
+  </div><a class="u-url" href="/blog/2024/11/11/minimax" hidden></a>
+</article>
 
-<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">float</span> <span class="n">error</span><span class="p">,</span> <span class="n">prev_error</span><span class="p">;</span>
-<span class="n">error</span> <span class="o">=</span> <span class="n">set_point</span> <span class="o">-</span> <span class="n">sensor_value</span><span class="p">;</span>
-</code></pre></div></div>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
 
-<ul>
-  <li>Calculate <strong>p</strong> value</li>
-</ul>
+  <div class="wrapper">
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <h4>CONTACT</h4>
+        <ul class="contact-list">
+          <li class="p-name"><li><a class="u-email" href="mailto:deshritbaral@gmail.com">deshritbaral@gmail.com</a></li></ul>
+      </div>
 
-<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">float</span> <span class="n">p</span><span class="p">;</span>
-<span class="n">p</span> <span class="o">=</span> <span class="n">kp</span> <span class="o">*</span> <span class="n">error</span><span class="p">;</span>
-</code></pre></div></div>
+      <div class="footer-col footer-col-2">
+        <h4>SOCIAL</h4><ul class="social-media-list"><li><a href="https://github.com/deshrit"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">deshrit</span></a></li><li><a href="https://www.linkedin.com/in/deshrit"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#linkedin"></use></svg> <span class="username">deshrit</span></a></li><li><a href="https://youtube.com/%40deshrit"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#youtube"></use></svg> <span class="username">@deshrit</span></a></li></ul>
+</div>
 
-<ul>
-  <li>Calculate <strong>d</strong> value</li>
-</ul>
+      <div class="footer-col footer-col-3">
+        <p></p>
+      </div>
+    </div>
 
-<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">float</span> <span class="n">d</span><span class="p">;</span>
-<span class="n">d</span> <span class="o">=</span> <span class="n">kd</span> <span class="o">*</span> <span class="p">(</span><span class="n">prev_error</span> <span class="o">-</span> <span class="n">error</span><span class="p">);</span>
-</code></pre></div></div>
+  </div>
 
-<ul>
-  <li>Calculate <strong>i</strong> value</li>
-</ul>
+</footer>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id=”MathJax-script” async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
-<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">float</span> <span class="n">i</span><span class="p">;</span>
-<span class="n">i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="n">ki</span> <span class="o">*</span> <span class="n">error</span><span class="p">;</span>
-</code></pre></div></div>
+  </body>
 
-<ul>
-  <li>Total PID value</li>
-</ul>
-
-<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">float</span> <span class="n">output</span><span class="p">;</span>
-<span class="n">output</span> <span class="o">=</span> <span class="n">p</span> <span class="o">+</span> <span class="n">i</span> <span class="o">-</span> <span class="n">d</span><span class="p">;</span>
-</code></pre></div></div>
-
-<hr />
-
-<h2 id="tuning-the-pid-constants">Tuning the PID Constants</h2>
-
-<p>Now all you have to do is change the values of <code class="language-plaintext highlighter-rouge">kp</code>, <code class="language-plaintext highlighter-rouge">ki</code> and <code class="language-plaintext highlighter-rouge">kd</code> such that you get 
-desired output from your system.</p>
-
-<ol>
-  <li>
-    <p>Start with only one constant <code class="language-plaintext highlighter-rouge">kp</code>, like <code class="language-plaintext highlighter-rouge">kp = 2.0, ki = 0, kd = 0</code> and observe the 
-output. Tweak this value so that you get optimum possible outcome.</p>
-  </li>
-  <li>
-    <p>Next, start assuming <code class="language-plaintext highlighter-rouge">kd,</code> yeah <code class="language-plaintext highlighter-rouge">kd</code> not <code class="language-plaintext highlighter-rouge">ki</code>. We secondly tune <code class="language-plaintext highlighter-rouge">kd</code> because, it 
-dampens the over and under shoot created by <code class="language-plaintext highlighter-rouge">kp</code>. You might need to go back to <code class="language-plaintext highlighter-rouge">kp</code> 
-and tweak it to tune this value properly.</p>
-  </li>
-  <li>
-    <p>Finally, tune the <code class="language-plaintext highlighter-rouge">ki</code>. For the many systems you might not even need <code class="language-plaintext highlighter-rouge">ki</code>. You have 
-to think slightly differently for constant <code class="language-plaintext highlighter-rouge">ki</code> because if you see above mathematical 
-expression for the value associated with <code class="language-plaintext highlighter-rouge">ki</code> which is—<code class="language-plaintext highlighter-rouge">i</code>, depends on previous values 
-of <code class="language-plaintext highlighter-rouge">i</code> meaning it is integrating all the values over many loops whereas for <code class="language-plaintext highlighter-rouge">d</code> you 
-only need what previous <code class="language-plaintext highlighter-rouge">error</code> value was, meaning it is accounting for how large the 
-difference in <code class="language-plaintext highlighter-rouge">error</code> is between the loops and finally for <code class="language-plaintext highlighter-rouge">kp</code>, it just needs the 
-current <code class="language-plaintext highlighter-rouge">error</code>.</p>
-  </li>
-</ol>
-
-<hr />
-
-<h2 id="other-important-points">Other Important Points</h2>
-
-<ol>
-  <li>
-    <p>Calibrating the sensor—You might need to add offset values depending upon the type 
-and quality of sensor used in the project.</p>
-  </li>
-  <li>
-    <p>Skip the processing in deadzone—As we know the total PID value is the direct output 
-to the actuator, suppose, for a balancing robot in a <em>single axis</em>, if the sensor 
-output value in degree is \(0^\circ\) when perfectly vertical, then possible deadzone 
-range (depending upon the type of sensors, motors etc.) can be \(\pm2^\circ\), where 
-processing the PID value can be completely skipped and simply set to 0.</p>
-  </li>
-  <li>
-    <p>Also Keep in account for the actuator deadzone—If you are using an arduino to drive 
-a motor with a motor driver, you have to give out PWM value from any analog pin to the 
-driver, which generally in code value from 0 to 255 and you might have noticed the 
-motor does not immediately start moving in initial values maybe even for upto 10 or 20, 
-this maximum value until when the motor does not start moving is the actuator deadzone. 
-And to fix this problem simply add this value 20 to PID output or you can also map your 
-PID value to range 20 to 255 of motor driver output.</p>
-  </li>
-  <li>
-    <p>Clamp the PID value to your actuator range—Suppose if your total PID value came out 
-to be 257 to give it to your motor driver which should be only between range 0 to 255, 
-the value might overflow as 2. So better clamp the value \(\gt\) 255 to 255 and 
-\(\lt\) 0 to 0.</p>
-  </li>
-</ol>
-
-<hr />
-
-<h2 id="combining-everything">Combining Everything</h2>
-
-<p>A typical setup looks like this:</p>
-
-<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;Arduino.h&gt;</span><span class="cp">
-</span>
-<span class="cm">/* Required variables */</span>
-<span class="kt">float</span> <span class="n">sensor_value</span><span class="p">,</span> <span class="n">output</span><span class="p">,</span> <span class="n">set_point</span><span class="p">,</span> <span class="n">error</span><span class="p">,</span> <span class="n">prev_error</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">d</span><span class="p">;</span>
-<span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">loop_timer</span><span class="p">;</span>
-
-<span class="cm">/* PID parameters */</span>
-<span class="kt">float</span> <span class="n">Kp</span> <span class="o">=</span> <span class="mf">2.0</span><span class="p">,</span> <span class="n">Ki</span> <span class="o">=</span> <span class="mf">5.0</span><span class="p">,</span> <span class="n">Kd</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">;</span>
-
-<span class="cm">/* Utility functions */</span>
-<span class="kt">float</span> <span class="nf">read_sensor</span><span class="p">()</span> <span class="p">{}</span>
-<span class="kt">void</span> <span class="n">drive_motor</span><span class="p">(</span><span class="kt">float</span> <span class="n">value</span><span class="p">)</span> <span class="p">{}</span>
-
-<span class="kt">void</span> <span class="n">setup</span><span class="p">()</span> <span class="p">{</span>
-
-  <span class="cm">/* Required setup code ... */</span>
-  
-  <span class="n">loop_timer</span> <span class="o">=</span> <span class="n">micros</span><span class="p">();</span>
-<span class="p">}</span>
-
-<span class="kt">void</span> <span class="n">loop</span><span class="p">()</span> <span class="p">{</span>
-
-  <span class="cm">/* Read sensor value */</span>
-  <span class="n">sensor_value</span> <span class="o">=</span> <span class="n">read_sensor</span><span class="p">();</span>
-
-  <span class="cm">/* PID code */</span>
-  <span class="n">error</span> <span class="o">=</span> <span class="n">set_point</span> <span class="o">-</span> <span class="n">sensor_value</span><span class="p">;</span>
-  <span class="n">p</span> <span class="o">=</span> <span class="n">kp</span> <span class="o">*</span> <span class="n">error</span><span class="p">;</span>
-  <span class="n">d</span> <span class="o">=</span> <span class="n">kd</span> <span class="o">*</span> <span class="p">(</span><span class="n">prev_error</span> <span class="o">-</span> <span class="n">error</span><span class="p">);</span>
-  <span class="n">prev_error</span> <span class="o">=</span> <span class="n">error</span><span class="p">;</span>
-  <span class="n">i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="n">ki</span> <span class="o">*</span> <span class="n">error</span><span class="p">;</span>
-  <span class="n">output</span> <span class="o">=</span> <span class="n">p</span> <span class="o">+</span> <span class="n">i</span> <span class="o">-</span> <span class="n">d</span><span class="p">;</span>
-
-  <span class="cm">/* Driving the actuator */</span>
-  <span class="n">drive_motor</span><span class="p">(</span><span class="n">output</span><span class="p">);</span>
-
-  <span class="cm">/* Constant 250Hz main loop */</span>
-  <span class="k">while</span> <span class="p">(</span><span class="n">micros</span><span class="p">()</span> <span class="o">-</span> <span class="n">loop_timer</span> <span class="o">&lt;</span> <span class="mi">4000</span><span class="p">);</span>
-  <span class="n">loop_timer</span> <span class="o">=</span> <span class="n">micros</span><span class="p">();</span>
-<span class="p">}</span>
-</code></pre></div></div>]]></content><author><name></name></author><category term="jekyll" /><category term="update" /><summary type="html"><![CDATA[If you’ve ever tried to control the speed of a motor, balance a robot, or maintain a stable temperature with an Arduino or any other micro-controller, chances are you’ve come across something called a PID controller. At first, PID might look complicated with all its math and jargon—but its actually a simple concept! Today, I will break it down for you in simple terms so that you can quickly learn how to implement it in your own projects.]]></summary></entry></feed>
+</html>
