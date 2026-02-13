@@ -12,6 +12,9 @@ with PyTroch framework using pretrained [VGG16](https://arxiv.org/abs/1409.1556)
 trained on [ImageNet](https://www.image-net.org/) dataset on to 
 new [Cat and Dogs](https://www.microsoft.com/en-us/download/details.aspx?id=54765) dataset.
 
+TLDR; Complete jupyter notebook of this implementation is 
+available [here](https://gist.github.com/deshrit/f20bf8dd7ffe64dd2b28d939598513d3).
+
 ---
 
 ## Why Transfer Learning?
@@ -54,14 +57,15 @@ leave as is and update the path.
 ```python
 import os
 
-from PIL import Image
+from PIL import Image, UnidentifiedImageError
 import matplotlib.pyplot as plt
 
 import torch
 import torch.nn as nn
+import torch.optim as optim
 from torch.utils.data import Dataset, DataLoader, random_split
 
-from torchvision import datasets
+from torchvision import datasets, models
 from torchvision.transforms import v2
 ```
 
@@ -165,11 +169,30 @@ train_loader = DataLoader(train_dataset, batch_size=BATCH_SIZE, shuffle=True)
 val_loader = DataLoader(val_dataset, batch_size=BATCH_SIZE, shuffle=False)
 ```
 
-```bash
-# Train dataset: 19998
-# Validation dataset: 5000
+```text
+Train dataset: 19998
+Validation dataset: 5000
 ```
 
+```python
+# Visualize sample data
+viz_transforms = v2.Compose([
+    v2.PILToTensor(),
+    v2.Resize((224, 224))
+])
+viz_dataset = CatDogDataset(transforms=viz_transforms)
+VIZ_BATCH = 4
+viz_loader = DataLoader(viz_dataset, batch_size=VIZ_BATCH, shuffle=True)
+viz_iter = iter(viz_loader)
+img_batch, label_batch = next(viz_iter)
+
+fig, axes = plt.subplots(1, VIZ_BATCH)
+for i in range(VIZ_BATCH):
+    axes[i].imshow(img_batch[i].permute(1, 2, 0))
+    axes[i].set_title(viz_dataset.classes[label_batch[i].item()])
+```
+
+![sample-data](/assets/img/sample-data.png)
 
 ---
 
@@ -274,17 +297,19 @@ for epoch in range(EPOCHS):
     print(f"Epoch [{epoch+1}/{EPOCHS}] "
           f"Loss: {running_loss/len(train_loader):.4f} "
           f"Train Acc: {train_acc:.2f}%")
+```
 
-# Epoch [1/10] Loss: 0.8439 Train Acc: 99.61%
-# Epoch [2/10] Loss: 0.9217 Train Acc: 99.63%
-# Epoch [3/10] Loss: 0.5612 Train Acc: 99.74%
-# Epoch [4/10] Loss: 0.4510 Train Acc: 99.78%
-# Epoch [5/10] Loss: 0.4539 Train Acc: 99.80%
-# Epoch [6/10] Loss: 0.5069 Train Acc: 99.80%
-# Epoch [7/10] Loss: 0.4641 Train Acc: 99.79%
-# Epoch [8/10] Loss: 0.5079 Train Acc: 99.81%
-# Epoch [9/10] Loss: 0.5364 Train Acc: 99.82%
-# Epoch [10/10] Loss: 0.4578 Train Acc: 99.81%
+```text
+Epoch [1/10] Loss: 1.6077 Train Acc: 96.74%
+Epoch [2/10] Loss: 0.8413 Train Acc: 98.25%
+Epoch [3/10] Loss: 0.5798 Train Acc: 98.81%
+Epoch [4/10] Loss: 0.8413 Train Acc: 98.99%
+Epoch [5/10] Loss: 0.7324 Train Acc: 99.14%
+Epoch [6/10] Loss: 0.5298 Train Acc: 99.37%
+Epoch [7/10] Loss: 0.5507 Train Acc: 99.42%
+Epoch [8/10] Loss: 0.7109 Train Acc: 99.49%
+Epoch [9/10] Loss: 0.9513 Train Acc: 99.45%
+Epoch [10/10] Loss: 0.5752 Train Acc: 99.62%
 ```
 
 ---
@@ -311,8 +336,30 @@ with torch.no_grad():
 val_acc = 100 * correct / total
 print(f"Validation Accuracy: {val_acc:.2f}%")
 
-# Validation Accuracy: 98.72%
 ```
+
+```text
+Validation Accuracy: 98.78%
+```
+
+```python
+# Sample prediction
+val_iter = iter(val_loader)
+img_batch, label_batch = next(val_iter)
+img_batch.shape, label_batch
+
+outputs = model(img_batch.to(device))
+_, pred_batch = torch.max(outputs, 1)
+
+fig, axes = plt.subplots(1, 4)
+for i in range(4):
+    axes[i].imshow(img_batch[i].permute(1, 2, 0))
+    axes[i].set_title(dataset.classes[pred_batch[i].item()], color = "green" if label_batch[i] == pred_batch[i] else "red")
+```
+
+![sample-pred](/assets/img/sample-pred.png)
+
+The images are slightly different in contrast due to normalization.
 
 ---
 
