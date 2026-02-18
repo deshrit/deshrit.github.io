@@ -9,12 +9,12 @@ layout: home
 
 Hi, I am Deshrit *(day-shree-th)* !
 
-I am a software engineer based in Nepal 🇳🇵. 
+I am an AI and Robotics researcher based in Nepal 🇳🇵. 
 
-Currently, I am working at [smart-contents](https://smartcontents.co.jp/){:target="_blank"}, 
-leading two projects—a chatbot as a service and an AI assisted financial document 
-generation workflow. I am extensively using langgraph 
-and postgreSQL for writing persistence and fault tolerant applications.
+Currently, I am building custom robotics hardware implementing and researching around 
+monocular SLAM using Raspberry Pi, Arduino and Stepper Motors. I am also working on
+personal entrepreneurial projects aiding the health care community.
+
 
 Previously I worked at [SecurityPal](https://www.securitypalhq.com/){:target="_blank"}.
 
