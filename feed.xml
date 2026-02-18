@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.4.1">Jekyll</generator><link href="https://deshritbaral.com.np/feed.xml" rel="self" type="application/atom+xml" /><link href="https://deshritbaral.com.np/" rel="alternate" type="text/html" /><updated>2026-02-18T08:28:45+00:00</updated><id>https://deshritbaral.com.np/feed.xml</id><title type="html">Deshrit Baral</title><entry><title type="html">Neural Network From Scratch With NumPy</title><link href="https://deshritbaral.com.np/blog/2025/11/03/nn-numpy" rel="alternate" type="text/html" title="Neural Network From Scratch With NumPy" /><published>2025-11-03T00:00:00+00:00</published><updated>2025-11-03T00:00:00+00:00</updated><id>https://deshritbaral.com.np/blog/2025/11/03/nn-numpy</id><content type="html" xml:base="https://deshritbaral.com.np/blog/2025/11/03/nn-numpy"><![CDATA[<p>Neural networks often feel like magic—high-level libraries abstract away the math, GPUs 
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.4.1">Jekyll</generator><link href="https://deshritbaral.com.np/feed.xml" rel="self" type="application/atom+xml" /><link href="https://deshritbaral.com.np/" rel="alternate" type="text/html" /><updated>2026-02-18T16:23:47+00:00</updated><id>https://deshritbaral.com.np/feed.xml</id><title type="html">Deshrit Baral</title><entry><title type="html">Neural Network From Scratch With NumPy</title><link href="https://deshritbaral.com.np/blog/2025/11/03/nn-numpy" rel="alternate" type="text/html" title="Neural Network From Scratch With NumPy" /><published>2025-11-03T00:00:00+00:00</published><updated>2025-11-03T00:00:00+00:00</updated><id>https://deshritbaral.com.np/blog/2025/11/03/nn-numpy</id><content type="html" xml:base="https://deshritbaral.com.np/blog/2025/11/03/nn-numpy"><![CDATA[<p>Neural networks often feel like magic—high-level libraries abstract away the math, GPUs 
 crunch the numbers, and with a few lines of code, models start making predictions. 
 But beneath the convenience of frameworks like TensorFlow and PyTorch lies a 
 beautifully simple set of mathematical operations. In this blog, we’ll strip away the 
@@ -171,27 +171,28 @@ Output Layer (10 neurons, Softmax)
 
 <p>This is a fully connected (dense) feedforward network.</p>
 
-<h2 id="data-flow-in-single-perceptron">Data Flow in Single Perceptron</h2>
+<h2 id="data-flow-in-the-network">Data Flow in the network</h2>
 
 <p><img src="/assets/img/single-neuron.png" alt="single-neuron" /></p>
 
-<p>Taking just one example input and a neuron of the first layer, <code class="language-plaintext highlighter-rouge">z1</code>  is the
-mathematical operation that is happening during the forward propagation in the 
-network. In order to get this operation we perform the matrix multiplication with NumPy
-with <code class="language-plaintext highlighter-rouge">@</code> operator on the arrays. We use <a href="https://en.wikipedia.org/wiki/Rectified_linear_unit">ReLU</a>
-as an activation function in the first layer. Activation functions are important 
-neural networks because without then it only becomes a linear regression.</p>
+<p>For first layer, talking one example input image and a neuron, we obtain <code class="language-plaintext highlighter-rouge">a1</code> 
+as the output. The operation performed on batch of input array and all the neurons of 
+the first layer to yield <code class="language-plaintext highlighter-rouge">z1</code> is simply the matrix multiplication <code class="language-plaintext highlighter-rouge">@</code>. After which we
+perform the <a href="https://en.wikipedia.org/wiki/Rectified_linear_unit">ReLU</a> activation 
+function which is fairly simple to implement. Due to this matrix operation you might 
+see transpose operation <code class="language-plaintext highlighter-rouge">&lt;array&gt;.T</code> being performed in order to obtain the required 
+output else where in the code.</p>
 
 <p><img src="/assets/img/relu-plot.png" alt="relu-plot" /></p>
 
-\[{\displaystyle \operatorname {ReLU} (x)=x^{+}=f(x)=\max(0,x)={\frac {x+|x|}{2}}={\begin{cases}x&amp;{\text{if }}x&gt;0,\\0&amp;x\leq 0\end{cases}}}\]
+\[{\displaystyle \operatorname {ReLU} (x)=f(x)=x^{+}=\max(0,x)={\frac {x+|x|}{2}}={\begin{cases}x&amp;{\text{if }}x&gt;0,\\0&amp;x\leq 0\end{cases}}}\]
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">ReLU</span><span class="p">(</span><span class="n">z</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">np</span><span class="p">.</span><span class="n">maximum</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>
 </code></pre></div></div>
 
-<p>We will be need the derivative of ReLU during the backpropagation so lets look at
-their implementation and plot too.</p>
+<p>We will be needing the derivative of ReLU function during the backpropagation so lets 
+take a look its implementation and plot as well.</p>
 
 <p><img src="/assets/img/relu-derivative-plot.png" alt="relu-derivative-plot" /></p>
 
@@ -200,6 +201,14 @@ their implementation and plot too.</p>
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">ReLU_deriv</span><span class="p">(</span><span class="n">z</span><span class="p">):</span>
     <span class="k">return</span> <span class="p">(</span><span class="n">z</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">).</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">float64</span><span class="p">)</span>
 </code></pre></div></div>
+
+<p>Similarly, taking the single output from first layer into the second layer is almost the
+same expect for the activation function. In the second layer we will be using
+<a href="https://en.wikipedia.org/wiki/Softmax_function">Softmax</a> function.</p>
+
+<p><img src="/assets/img/single-neuron2.png" alt="single-neuron2" /></p>
+
+\[{\displaystyle \sigma (\mathbf {z} )_{i}={\frac {e^{z_{i}}}{\sum _{j=1}^{K}e^{z_{j}}}}\,.}\]
 
 <p><em>[WIP]…</em></p>]]></content><author><name></name></author><summary type="html"><![CDATA[Neural networks often feel like magic—high-level libraries abstract away the math, GPUs crunch the numbers, and with a few lines of code, models start making predictions. But beneath the convenience of frameworks like TensorFlow and PyTorch lies a beautifully simple set of mathematical operations. In this blog, we’ll strip away the abstractions and build a neural network from scratch using nothing but NumPy.]]></summary></entry><entry><title type="html">Understanding Transfer Learning With Pretrained VGG16 Network</title><link href="https://deshritbaral.com.np/blog/2025/05/06/transfer-learning" rel="alternate" type="text/html" title="Understanding Transfer Learning With Pretrained VGG16 Network" /><published>2025-05-06T00:00:00+00:00</published><updated>2025-05-06T00:00:00+00:00</updated><id>https://deshritbaral.com.np/blog/2025/05/06/transfer-learning</id><content type="html" xml:base="https://deshritbaral.com.np/blog/2025/05/06/transfer-learning"><![CDATA[<p>Transfer learning is a powerful machine learning technique where a trained models’ 
 parameters are reused instead of training from scratch in order to fine tune on 
