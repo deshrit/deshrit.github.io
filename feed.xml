@@ -1,4 +1,207 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.4.1">Jekyll</generator><link href="https://deshritbaral.com.np/feed.xml" rel="self" type="application/atom+xml" /><link href="https://deshritbaral.com.np/" rel="alternate" type="text/html" /><updated>2026-02-13T09:06:16+00:00</updated><id>https://deshritbaral.com.np/feed.xml</id><title type="html">Deshrit Baral</title><entry><title type="html">Understanding Transfer Learning With Pretrained VGG16 Network</title><link href="https://deshritbaral.com.np/blog/2025/05/06/transfer-learning" rel="alternate" type="text/html" title="Understanding Transfer Learning With Pretrained VGG16 Network" /><published>2025-05-06T00:00:00+00:00</published><updated>2025-05-06T00:00:00+00:00</updated><id>https://deshritbaral.com.np/blog/2025/05/06/transfer-learning</id><content type="html" xml:base="https://deshritbaral.com.np/blog/2025/05/06/transfer-learning"><![CDATA[<p>Transfer learning is a powerful machine learning technique where a trained models’ 
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.4.1">Jekyll</generator><link href="https://deshritbaral.com.np/feed.xml" rel="self" type="application/atom+xml" /><link href="https://deshritbaral.com.np/" rel="alternate" type="text/html" /><updated>2026-02-18T08:17:18+00:00</updated><id>https://deshritbaral.com.np/feed.xml</id><title type="html">Deshrit Baral</title><entry><title type="html">Neural Network From Scratch With NumPy</title><link href="https://deshritbaral.com.np/blog/2025/11/03/nn-numpy" rel="alternate" type="text/html" title="Neural Network From Scratch With NumPy" /><published>2025-11-03T00:00:00+00:00</published><updated>2025-11-03T00:00:00+00:00</updated><id>https://deshritbaral.com.np/blog/2025/11/03/nn-numpy</id><content type="html" xml:base="https://deshritbaral.com.np/blog/2025/11/03/nn-numpy"><![CDATA[<p>Neural networks often feel like magic—high-level libraries abstract away the math, GPUs 
+crunch the numbers, and with a few lines of code, models start making predictions. 
+But beneath the convenience of frameworks like TensorFlow and PyTorch lies a 
+beautifully simple set of mathematical operations. In this blog, we’ll strip away the 
+abstractions and build a neural network from scratch using nothing but <a href="https://numpy.org/">NumPy</a>.</p>
+
+<p>We will understand how training and backpropagation works under the hood. TLDR;  The notebook 
+implementation of this blog is available <a href="https://gist.github.com/deshrit/b12494112780f86ff728ecc761e6f55a">here</a>.</p>
+
+<hr />
+
+<h2 id="what-do-we-want-our-model-to-predict">What do we want our model to predict?</h2>
+
+<p>For this implementation, we’ll train our neural network to classify handwritten digits 
+from the famous <a href="https://en.wikipedia.org/wiki/MNIST_database">MNIST</a> dataset.</p>
+
+<p><img src="/assets/img/MNIST.png" alt="MNIST" /></p>
+
+<p><em>Source: https://en.wikipedia.org/wiki/MNIST_database</em></p>
+
+<h2 id="download-and-prepare-dataset">Download and Prepare Dataset</h2>
+
+<p>We can use <a href="https://scikit-learn.org/stable/">scikit-learn</a> to make things easier here.
+Install the library in your virtual environment. Loading MNIST with scikit-learn is just
+oneliner and it directly gives us images as NumPy array.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">pip</span> <span class="n">install</span> <span class="n">scikit</span><span class="o">-</span><span class="n">learn</span>
+</code></pre></div></div>
+
+<p>Load the dataset with the following code snippet:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">sklearn</span>
+
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">sklearn</span><span class="p">.</span><span class="n">datasets</span><span class="p">.</span><span class="n">fetch_openml</span><span class="p">(</span><span class="s">"mnist_784"</span><span class="p">,</span> <span class="n">return_X_y</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">as_frame</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">X</span><span class="p">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">y</span><span class="p">.</span><span class="n">shape</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(70000, 784) (70000,)
+</code></pre></div></div>
+
+<p>As you can see there are 70,000 images with feature size of 784 and their corresponding
+target labels. The <a href="https://en.wikipedia.org/wiki/MNIST_database">MNIST</a> dataset 
+contains 70,000 grayscale images of 28x28 pixels hand written digits (0 to 9). Each 
+image is flattened into a vector of 784 features.</p>
+
+<p><img src="/assets/img/MNIST-flat.png" alt="MNIST-flat" /></p>
+
+<h2 id="pre-processing-the-dataset">Pre-processing the dataset</h2>
+
+<p>Lets observe the first input image of the dataset.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+
+<span class="n">plt</span><span class="p">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">reshape</span><span class="p">(</span><span class="mi">28</span><span class="p">,</span> <span class="mi">28</span><span class="p">),</span> <span class="n">cmap</span><span class="o">=</span><span class="s">"gray"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><img src="/assets/img/x0.png" alt="x0" /></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">print</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</code></pre></div></div>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[  0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0
+   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0
+   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0
+   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0
+   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0
+   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0
+   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0
+   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0
+   0   0   0   0   0   0   0   0   3  18  18  18 126 136 175  26 166 255
+ 247 127   0   0   0   0   0   0   0   0   0   0   0   0  30  36  94 154
+ 170 253 253 253 253 253 225 172 253 242 195  64   0   0   0   0   0   0
+   0   0   0   0   0  49 238 253 253 253 253 253 253 253 253 251  93  82
+  82  56  39   0   0   0   0   0   0   0   0   0   0   0   0  18 219 253
+ 253 253 253 253 198 182 247 241   0   0   0   0   0   0   0   0   0   0
+   0   0   0   0   0   0   0   0  80 156 107 253 253 205  11   0  43 154
+   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0
+   0  14   1 154 253  90   0   0   0   0   0   0   0   0   0   0   0   0
+   0   0   0   0   0   0   0   0   0   0   0   0   0 139 253 190   2   0
+   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0
+   0   0   0   0   0  11 190 253  70   0   0   0   0   0   0   0   0   0
+   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0  35 241
+ 225 160 108   1   0   0   0   0   0   0   0   0   0   0   0   0   0   0
+   0   0   0   0   0   0   0   0   0  81 240 253 253 119  25   0   0   0
+   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0
+   0   0  45 186 253 253 150  27   0   0   0   0   0   0   0   0   0   0
+   0   0   0   0   0   0   0   0   0   0   0   0   0  16  93 252 253 187
+   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0
+   0   0   0   0   0   0   0 249 253 249  64   0   0   0   0   0   0   0
+   0   0   0   0   0   0   0   0   0   0   0   0   0   0  46 130 183 253
+ 253 207   2   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0
+   0   0   0   0  39 148 229 253 253 253 250 182   0   0   0   0   0   0
+   0   0   0   0   0   0   0   0   0   0   0   0  24 114 221 253 253 253
+ 253 201  78   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0
+   0   0  23  66 213 253 253 253 253 198  81   2   0   0   0   0   0   0
+   0   0   0   0   0   0   0   0   0   0  18 171 219 253 253 253 253 195
+  80   9   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0
+  55 172 226 253 253 253 253 244 133  11   0   0   0   0   0   0   0   0
+   0   0   0   0   0   0   0   0   0   0 136 253 253 253 212 135 132  16
+   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0
+   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0
+   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0
+   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0
+   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0
+   0   0   0   0   0   0   0   0   0   0]
+</code></pre></div></div>
+
+<p>As we can clearly see that the pixel values are in range between 0 and 255. We should 
+normalize this range to 0 and 1. Normalizing has lots of advantage in machine learning,
+it helps improve numerical stability, prevents feature dominance and speeds up
+the training time.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">X</span> <span class="o">=</span> <span class="n">X</span> <span class="o">/</span> <span class="mf">255.0</span>
+</code></pre></div></div>
+
+<p>Similarly, looking at the target label of this first image.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">print</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</code></pre></div></div>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>'5'
+</code></pre></div></div>
+
+<p><a href="https://www.openml.org/">OpenML</a> stores categorical data as strings. It would be 
+easier to process numeric target instead of strings. So, we convert data type of 
+target <code class="language-plaintext highlighter-rouge">y</code> to numeric.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+
+<span class="n">y</span> <span class="o">=</span> <span class="n">y</span><span class="p">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">int64</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>We must perform an another important pre-processing step for target label <code class="language-plaintext highlighter-rouge">y</code> as well. 
+Currently, the target label are as <code class="language-plaintext highlighter-rouge">[5, 0, 4, 9, .....]</code>. We want to perform one-hot 
+encoding of this categorical data into a numerical binary format.</p>
+
+<p><img src="/assets/img/one-hot.png" alt="one-hot" /></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">one_hot</span><span class="p">(</span><span class="n">y</span><span class="p">):</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">y</span><span class="p">.</span><span class="n">size</span><span class="p">,</span> <span class="n">y</span><span class="p">.</span><span class="nb">max</span><span class="p">().</span><span class="n">item</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">out</span><span class="p">[</span><span class="n">np</span><span class="p">.</span><span class="n">arange</span><span class="p">(</span><span class="n">y</span><span class="p">.</span><span class="n">size</span><span class="p">),</span> <span class="n">y</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">out</span>
+</code></pre></div></div>
+
+<p>We one-hot encode all the target labels:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Y</span> <span class="o">=</span> <span class="n">one_hot</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Finally, we will split 80% of dataset for training and rest 20% for evaluating the 
+model. We also keeping non encoded target label which will be required during
+evaluation.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">Y_train</span><span class="p">,</span> <span class="n">Y_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="fully-connected-neural-network">Fully Connected Neural Network</h2>
+
+<p>We’ll build a simple 2-layer neural network.</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Input (784)
+    ↓
+Hidden Layer (128 neurons, ReLU)
+    ↓
+Output Layer (10 neurons, Softmax)
+</code></pre></div></div>
+
+<p><img src="/assets/img/nn.png" alt="nn" /></p>
+
+<p>This is a fully connected (dense) feedforward network.</p>
+
+<h2 id="data-flow-in-single-perceptron">Data Flow in Single Perceptron</h2>
+
+<p><img src="/assets/img/single-neuron.png" alt="single-neuron" /></p>
+
+<p>Taking just one example input and a neuron of the first layer, <code class="language-plaintext highlighter-rouge">z1</code>  is the
+mathematical operation that is happening during the forward propagation in the 
+network. In order to get this operation we perform the matrix multiplication with NumPy
+with <code class="language-plaintext highlighter-rouge">@</code> operator on the arrays. We use <a href="https://en.wikipedia.org/wiki/Rectified_linear_unit">ReLU</a>
+as an activation function in the first layer. Activation functions are important 
+neural networks because without then it only becomes a linear regression.</p>
+
+<p><img src="/assets/img/relu-plot.png" alt="relu-plot" /></p>
+
+\[{\displaystyle \operatorname {ReLU} (x)=x^{+}=f(x)=\max(0,x)={\frac {x+|x|}{2}}={\begin{cases}x&amp;{\text{if }}x&gt;0,\\0&amp;x\leq 0\end{cases}}}\]
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">ReLU</span><span class="p">(</span><span class="n">z</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="p">.</span><span class="n">maximum</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>We will be need the derivative of ReLU during the backpropagation so lets look at
+their implementation and plot too.</p>
+
+<p><img src="/assets/img/relu-derivative-plot.png" alt="relu-derivative-plot" /></p>
+
+\[f'(x) = {\begin{cases}1&amp;{\text{if }}x&gt;0,\\0&amp;x\leq 0\end{cases}}\]
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">ReLU_deriv</span><span class="p">(</span><span class="n">z</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">z</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">).</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">float64</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><em>[WIP]…</em></p>]]></content><author><name></name></author><summary type="html"><![CDATA[Neural networks often feel like magic—high-level libraries abstract away the math, GPUs crunch the numbers, and with a few lines of code, models start making predictions. But beneath the convenience of frameworks like TensorFlow and PyTorch lies a beautifully simple set of mathematical operations. In this blog, we’ll strip away the abstractions and build a neural network from scratch using nothing but NumPy.]]></summary></entry><entry><title type="html">Understanding Transfer Learning With Pretrained VGG16 Network</title><link href="https://deshritbaral.com.np/blog/2025/05/06/transfer-learning" rel="alternate" type="text/html" title="Understanding Transfer Learning With Pretrained VGG16 Network" /><published>2025-05-06T00:00:00+00:00</published><updated>2025-05-06T00:00:00+00:00</updated><id>https://deshritbaral.com.np/blog/2025/05/06/transfer-learning</id><content type="html" xml:base="https://deshritbaral.com.np/blog/2025/05/06/transfer-learning"><![CDATA[<p>Transfer learning is a powerful machine learning technique where a trained models’ 
 parameters are reused instead of training from scratch in order to fine tune on 
 specific dataset for specialized problem.</p>
 
